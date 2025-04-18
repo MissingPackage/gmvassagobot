@@ -2,7 +2,7 @@
 import json
 import numpy as np
 from pathlib import Path
-from app.services.embedding_utils import get_embedding, cosine_similarity
+from app.embeddings.utils import get_embedding, cosine_similarity
 
 from regenerate_embeddings import regenerate_if_needed
 

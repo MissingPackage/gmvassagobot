@@ -3,10 +3,10 @@ import dateparser
 from datetime import datetime, time
 from dateparser.conf import settings as dp_settings
 from datetime import timedelta
-from app.services.calendar_service import check_availability, create_appointment
+from app.calendar.gcal import check_availability, create_appointment
 from openai import OpenAI
 from app.config import OPENAI_API_KEY, MODEL
-from app.services.prompts import DATETIME_EXTRACTION_PROMPT, DURATION_EXTRACTION_PROMPT
+from app.ai.prompts import DATETIME_EXTRACTION_PROMPT, DURATION_EXTRACTION_PROMPT
 import json
 import re
 

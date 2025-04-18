@@ -1,7 +1,7 @@
 # app/services/detect_intent.py
 from openai import OpenAI
 from app.config import OPENAI_API_KEY, MODEL
-from app.services.prompts import INTENT_CLASSIFIER_PROMPT
+from app.ai.prompts import INTENT_CLASSIFIER_PROMPT
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 

@@ -2,7 +2,7 @@
 import json
 import hashlib
 from pathlib import Path
-from app.services.embedding_utils import get_embedding
+from app.embeddings.utils import get_embedding
 
 # Percorsi dei file
 FAQ_PATH = Path("app/data/faq.json")

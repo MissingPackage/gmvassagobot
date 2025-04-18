@@ -1,6 +1,6 @@
 # app/router/whatsapp.py
 from fastapi import APIRouter, Request
-from app.services.openai_service import ask_gpt
+from app.ai.openai_interface import ask_gpt
 
 router = APIRouter()
 

@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from app.services.openai_service import handle_message
+from app.ai.openai_interface import handle_message
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")

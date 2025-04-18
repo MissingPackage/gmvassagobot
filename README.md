@@ -1,174 +1,110 @@
-# Chatbot Vassago
+# 🤖 Chatbot AI – GM Vassago Assistant
 
-Chatbot Vassago è un assistente virtuale progettato per gestire FAQ, prenotazioni e interazioni personalizzate con gli utenti tramite diversi canali, come WhatsApp e interfacce web.
+[![CI Tests](https://github.com/MissingPackage/gmvassagobot/actions/workflows/ci.yml/badge.svg)](https://github.com/MissingPackage/gmvassagobot/actions)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Made with ❤️](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red)](https://gmvassago.it)
 
-## Struttura del Progetto
+Assistente virtuale AI professionale per la prenotazione di sessioni di gioco di ruolo, risposte automatiche alle FAQ e gestione appuntamenti su Google Calendar.  
+Integrato con OpenAI, Google API e canali di messaggistica (WhatsApp, Messenger).
+
+---
+
+## 🧠 Funzionalità principali
+
+- ✅ Riconoscimento intenzioni (`intent detection`)
+- ✅ Risposte semantiche a FAQ (embedding + GPT fallback)
+- ✅ Parsing naturale di data/ora con fallback AI
+- ✅ Integrazione con Google Calendar per prenotazioni
+- ✅ Gestione slot disponibili + alternative
+- ✅ Interfaccia di test locale
+- ✅ Logging intelligente per debugging
+- ✅ Test automatizzati + CI GitHub Actions
+
+---
+
+## 📁 Struttura progetto
 
 ```
-.env
-gitignore
-Procfile
-README.md
-regenerate_embeddings.py
-requirements.txt
-app/
-    config.py
-    main.py
-    data/
-        .faq.hash
-        credentials.json
-        faq_embeddings.json
-        faq.json
-        token.json
-    router/
-        ui_test.py
-        whatsapp.py
-    services/
-        booking_service.py
-        calendar_service.py
-        detect_intent.py
-        embedding_utils.py
-        faq_service.py
-        openai_service.py
-    templates/
+gmvassago_bot/
+├── app/
+│   ├── ai/
+│   │   ├── prompts.py
+│   │   └── openai_interface.py
+│   ├── booking.py
+│   ├── calendar/
+│   │   ├── gcal.py
+│   │   └── slot.py
+│   ├── config.py
+│   ├── embeddings/
+│   │   ├── faq.py
+│   │   └── utils.py
+│   ├── main.py
+│   └── nlp/
+│       └── intent.py
+├── tests/
+│   ├── conftest.py
+│   ├── test_booking.py
+│   ├── test_calendar.py
+│   ├── test_embeddings.py
+│   ├── test_intent.py
+│   └── test_parser.py
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── .env
+├── requirements.txt
+└── README.md
 ```
 
-### Componenti principali
+---
 
-- **app/main.py**: Entry point dell'applicazione.
-- **app/config.py**: Configurazione centralizzata tramite variabili d'ambiente.
-- **app/data/**: Contiene file di dati come FAQ e credenziali.
-- **app/router/**: Gestisce le rotte per i canali di comunicazione.
-- **app/services/**: Moduli per servizi come prenotazioni, gestione FAQ e integrazione con OpenAI.
-- **templates/**: Template HTML per l'interfaccia utente.
-
-## Requisiti
-
-Assicurati di avere Python 3.11 o superiore installato. I pacchetti richiesti sono elencati in [requirements.txt](requirements.txt):
+## ⚙️ Setup rapido
 
 ```bash
+# Clona il progetto
+git clone https://github.com/MissingPackage/gmvassagobot.git
+cd gmvassagobot
+
+# Crea venv e attivalo
+python -m venv venv
+source venv/bin/activate  # oppure .\venv\Scripts\activate su Windows
+
+# Installa dipendenze
 pip install -r requirements.txt
+
+# Configura il file .env
+cp .env.example .env  # crea il tuo se necessario
+
+# Avvia interfaccia test
+python app/main.py
 ```
 
-## Configurazione
+---
 
-1. Crea un file `.env` nella root del progetto con le seguenti variabili:
-   ```
-   OPENAI_API_KEY=your_openai_api_key
-   GOOGLE_CLIENT_ID=your_google_client_id
-   GOOGLE_CLIENT_SECRET=your_google_client_secret
-   ```
-
-2. Assicurati che i file sensibili come `credentials.json` e `token.json` siano presenti in `app/data/`.
-
-## Avvio del Progetto
-
-Per avviare il server FastAPI, esegui:
+## 🧪 Esecuzione dei test
 
 ```bash
-uvicorn app.main:app --reload
+pytest tests/
 ```
 
-Il server sarà disponibile su `http://127.0.0.1:8000`.
+Test automatizzati via GitHub Actions: ogni push o PR su `main` attiva i test CI.
 
-## Funzionalità
+---
 
-- **Gestione FAQ**: Risposte rapide basate su embedding semantici.
-- **Prenotazioni**: Integrazione con Google Calendar per creare eventi e gestire disponibilità.
-- **Canali di comunicazione**: Supporto per WhatsApp (via Twilio) e interfaccia web.
-- **Personalizzazione**: Risposte adattate al tono aziendale e al canale.
+## 🚀 Roadmap (sprint-based)
 
-## Contributi
+| Sprint | Focus                         | Stato |
+|--------|-------------------------------|--------|
+| 1      | NLP + Parser + Intent         | ✅ Completato |
+| 2      | Embedding + Fallback + UI     | ✅ Completato |
+| 3      | Google Calendar + Slot logic  | ✅ Completato |
+| 4      | Docker + WhatsApp             | ⏳ In corso |
+| 5      | Facebook + fallback avanzato  | ⬜ Da fare |
+| 6      | UX, sicurezza, multilingua    | ⬜ Da fare |
 
-Contribuzioni sono benvenute! Apri una pull request o segnala un problema nella sezione Issues.
+---
 
-## Licenza
+## 📄 Licenza
 
-Questo progetto è distribuito sotto licenza MIT. Consulta il file `LICENSE` per maggiori dettagli.
-# Chatbot Vassago
-
-Chatbot Vassago è un assistente virtuale progettato per gestire FAQ, prenotazioni e interazioni personalizzate con gli utenti tramite diversi canali, come WhatsApp e interfacce web.
-
-## Struttura del Progetto
-
-```
-.env
-gitignore
-Procfile
-README.md
-regenerate_embeddings.py
-requirements.txt
-app/
-    config.py
-    main.py
-    data/
-        .faq.hash
-        credentials.json
-        faq_embeddings.json
-        faq.json
-        token.json
-    router/
-        ui_test.py
-        whatsapp.py
-    services/
-        booking_service.py
-        calendar_service.py
-        detect_intent.py
-        embedding_utils.py
-        faq_service.py
-        openai_service.py
-    templates/
-```
-
-### Componenti principali
-
-- **app/main.py**: Entry point dell'applicazione.
-- **app/config.py**: Configurazione centralizzata tramite variabili d'ambiente.
-- **app/data/**: Contiene file di dati come FAQ e credenziali.
-- **app/router/**: Gestisce le rotte per i canali di comunicazione.
-- **app/services/**: Moduli per servizi come prenotazioni, gestione FAQ e integrazione con OpenAI.
-- **templates/**: Template HTML per l'interfaccia utente.
-
-## Requisiti
-
-Assicurati di avere Python 3.11 o superiore installato. I pacchetti richiesti sono elencati in [requirements.txt](requirements.txt):
-
-```bash
-pip install -r requirements.txt
-```
-
-## Configurazione
-
-1. Crea un file `.env` nella root del progetto con le seguenti variabili:
-   ```
-   OPENAI_API_KEY=your_openai_api_key
-   GOOGLE_CLIENT_ID=your_google_client_id
-   GOOGLE_CLIENT_SECRET=your_google_client_secret
-   ```
-
-2. Assicurati che i file sensibili come `credentials.json` e `token.json` siano presenti in `app/data/`.
-
-## Avvio del Progetto
-
-Per avviare il server FastAPI, esegui:
-
-```bash
-uvicorn app.main:app --reload
-```
-
-Il server sarà disponibile su `http://127.0.0.1:8000`.
-
-## Funzionalità
-
-- **Gestione FAQ**: Risposte rapide basate su embedding semantici.
-- **Prenotazioni**: Integrazione con Google Calendar per creare eventi e gestire disponibilità.
-- **Canali di comunicazione**: Supporto per WhatsApp (via Twilio) e interfaccia web.
-- **Personalizzazione**: Risposte adattate al tono aziendale e al canale.
-
-## Contributi
-
-Contribuzioni sono benvenute! Apri una pull request o segnala un problema nella sezione Issues.
-
-## Licenza
-
-Questo progetto è distribuito sotto licenza MIT. Consulta il file `LICENSE` per maggiori dettagli.
+MIT © GM Vassago Team

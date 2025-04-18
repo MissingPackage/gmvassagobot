@@ -2,10 +2,10 @@
 import os
 from openai import OpenAI
 from app.config import OPENAI_API_KEY, MODEL
-from app.services.prompts import DEFAULT_SYSTEM_PROMPT
-from app.services.detect_intent import detect_intent
-from app.services.faq_service import faq_semantic
-from app.services.booking_service import gestisci_prenotazione
+from app.ai.prompts import DEFAULT_SYSTEM_PROMPT
+from app.nlp.intent import detect_intent
+from app.embeddings.faq import faq_semantic
+from app.booking import gestisci_prenotazione
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
