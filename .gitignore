@@ -1,0 +1,36 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# Virtual environments
+venv/
+.env/
+
+# Logs
+*.log
+
+# Compiled files
+*.so
+
+# Data files
+app/data/*.json
+!app/data/faq.json  # Mantieni faq.json nel repository
+app/data/.faq.hash
+
+# Credentials
+app/data/credentials.json
+app/data/token.json
+
+# IDE specific files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# CSV files (if not needed in the repo)
+*.csv
