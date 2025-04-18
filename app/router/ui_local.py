@@ -9,13 +9,12 @@ templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/test", response_class=HTMLResponse)
 def test_page(request: Request):
-    return templates.TemplateResponse("test_ui.html", {"request": request, "response": None})
+    return templates.TemplateResponse(request, "test_ui.html", {"response": None})
 
 @router.post("/test", response_class=HTMLResponse)
 async def test_post(request: Request, message: str = Form(...)):
     reply = handle_message(message)
-    return templates.TemplateResponse("test_ui.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "test_ui.html", {
         "user_message": message,
         "response": reply
     })

@@ -11,3 +11,5 @@ google-auth-oauthlib
 dateparser
 pytz
 pytest
+pytest-mock
+pytest-asyncio

@@ -34,6 +34,8 @@ def estrai_durata(messaggio: str) -> int | None:
         "quindici minuti": 15,
         "venti minuti": 20,
         "mezzora": 30,
+        "1 ora": 60,
+        "2 ore": 120
     }
 
     for chiave, durata in frasi_durata.items():
