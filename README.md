@@ -1,6 +1,6 @@
 # 🤖 Chatbot AI – GM Vassago Assistant
 
-[![CI Tests](https://github.com/MissingPackage/gmvassagobot/actions/workflows/ci.yml/badge.svg)](https://github.com/MissingPackage/gmvassagobot/actions)
+![Run Python Tests](https://github.com/MissingPackage/gmvassagobot/actions/workflows/ci.yml/badge.svg)
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Made with ❤️](https://img.shields.io/badge/Made%20with-%E2%9D%A4-red)](https://gmvassago.it)
