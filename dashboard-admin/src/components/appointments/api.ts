@@ -1,0 +1,21 @@
+import axios from 'axios';
+import { Appointment } from './types';
+
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000' });
+
+export async function listAppointments(): Promise<Appointment[]> {
+  const { data } = await api.get('/appointments/');
+  return data;
+}
+
+export async function createAppointment(payload: Omit<Appointment, 'id'>) {
+  return api.post('/appointments/', payload);
+}
+
+export async function updateAppointment(id: string, payload: Partial<Appointment>) {
+  return api.put(`/appointments/${id}`, payload);
+}
+
+export async function deleteAppointment(id: string) {
+  return api.delete(`/appointments/${id}`);
+}

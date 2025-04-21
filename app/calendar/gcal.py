@@ -1,6 +1,6 @@
 # app/services/calendar_service.py
 from __future__ import print_function
-from datetime import timezone
+from datetime import timezone, datetime, timedelta
 from pathlib import Path
 
 from google.oauth2.credentials import Credentials
@@ -82,3 +82,27 @@ def create_appointment(start_time, end_time, summary, description, calendar_id="
         
     created_event = service.events().insert(calendarId=calendar_id, body=event).execute()
     return created_event.get("htmlLink")
+
+
+def get_upcoming_events(days: int = 7, calendar_id="primary"):
+    service = get_calendar_service()
+
+    # Calcola il range temporale
+    now = datetime.now(timezone.utc)
+    time_min = now.isoformat()
+    time_max = (now + timedelta(days=days)).isoformat()
+
+    # Recupera gli eventi dal calendario
+    events_result = (
+        service.events()
+        .list(
+            calendarId=calendar_id,
+            timeMin=time_min,
+            timeMax=time_max,
+            singleEvents=True,
+            orderBy="startTime",
+        )
+        .execute()
+    )
+    print(events_result.get("items", []))
+    return events_result.get("items", [])

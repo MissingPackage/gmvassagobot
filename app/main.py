@@ -1,8 +1,29 @@
 # app/main.py
 from fastapi import FastAPI
-from app.router import ui_local, whatsapp
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from starlette.middleware.sessions import SessionMiddleware
+
+from app.config import SESSION_SECRET_KEY
+from app.dashboard.routes_admin import router as admin_router
+from app.routers import api, faq, ui_local, whatsapp
 
 app = FastAPI(title="Chatbot AI")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+# Includiamo il router di admin
+app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY)
+app.include_router(admin_router)
+app.mount("/static", StaticFiles(directory="app/dashboard/static"), name="static")
+
+# Includiamo i router della Dashboard
+app.include_router(api.api_router, tags=["api"])
+app.include_router(faq.router, tags=["FAQ"])
 
 # Includiamo il router di WhatsApp
 app.include_router(whatsapp.router, prefix="/webhook", tags=["WhatsApp"])

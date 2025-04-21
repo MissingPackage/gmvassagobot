@@ -13,3 +13,4 @@ pytz
 pytest
 pytest-mock
 pytest-asyncio
+itsdangerous

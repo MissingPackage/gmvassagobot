@@ -34,3 +34,29 @@ Thumbs.db
 
 # CSV files (if not needed in the repo)
 *.csv
+
+# Node.js specific
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Vite specific
+.vite/
+*.cache
+
+# React specific
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
