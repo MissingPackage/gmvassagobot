@@ -2,24 +2,281 @@
 @tailwind components;
 @tailwind utilities;
 
-/* === React‑Big‑Calendar dark theme override === */
-.rbc-calendar { width: 100%; }
-.rbc-off-range-bg { @apply bg-zinc-800/30; }
-.rbc-toolbar { @apply mb-4 flex flex-wrap gap-2 items-center; }
-.rbc-toolbar button { @apply bg-zinc-800 px-2 py-1 rounded text-xs hover:bg-zinc-700; }
-.rbc-toolbar button.rbc-active { @apply bg-emerald-600 text-white; }
-.rbc-month-view, .rbc-time-view { @apply text-[13px]; }
-.rbc-day-bg, .rbc-header, .rbc-time-content { @apply border-zinc-700; }
-.rbc-today { @apply bg-zinc-700/20; }
-.rbc-event { @apply bg-emerald-500/80 text-white rounded-sm px-[2px] py-[1px]; }
+/* === React‑Big‑Calendar theme override === */
+.rbc-calendar {
+  @apply w-full font-normal flex flex-col;
+  height: 100% !important;
+}
+
+/* Header/Toolbar */
+.rbc-toolbar {
+  @apply mb-4 flex flex-wrap gap-2 items-center justify-between;
+}
+
+.rbc-toolbar-label {
+  @apply text-lg font-medium text-zinc-900 dark:text-zinc-100 order-2 md:order-none;
+}
+
+.rbc-btn-group {
+  @apply flex gap-1;
+}
+
+.rbc-btn-group button {
+  @apply px-3 py-1.5 rounded-full text-sm font-medium transition-colors text-zinc-700 hover:text-zinc-950 hover:bg-zinc-200 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 border-0;
+}
+
+.rbc-btn-group button.rbc-active {
+  @apply bg-zinc-200 text-zinc-950 dark:bg-zinc-800 dark:text-zinc-100 shadow-none;
+}
+
+/* Month view */
+.rbc-month-view {
+  @apply border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden bg-white dark:bg-zinc-900 flex-1;
+}
+
+.rbc-month-header {
+  @apply bg-zinc-50 dark:bg-zinc-800/50;
+}
+
+.rbc-header {
+  @apply py-2 font-medium text-sm text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-month-row {
+  @apply border-t-0 border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-day-bg {
+  @apply border-r border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-off-range-bg {
+  @apply bg-zinc-50 dark:bg-zinc-800/30;
+}
+
+.rbc-today {
+  @apply bg-emerald-50 dark:bg-emerald-950/20;
+}
+
+/* Events */
+.rbc-event {
+  @apply bg-emerald-500 dark:bg-emerald-600 border-0 rounded-md text-sm font-medium;
+  line-height: 1.2;
+}
+
+.rbc-event.rbc-selected {
+  @apply bg-emerald-600 dark:bg-emerald-500;
+}
+
+.rbc-event-label {
+  @apply text-xs opacity-75 mb-0.5;
+}
+
+.rbc-event-content {
+  @apply whitespace-normal overflow-hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Month view events */
+.rbc-month-view .rbc-event {
+  @apply px-2 py-1 min-h-[24px] flex items-center;
+}
+
+.rbc-month-view .rbc-event-content {
+  @apply w-full;
+}
+
+/* Time grid events */
+.rbc-time-view .rbc-event {
+  @apply px-1.5 py-0.5 h-full flex flex-col justify-start;
+  width: calc(100% - 10px) !important;
+  left: 5px !important;
+  right: 5px !important;
+}
+
+.rbc-time-view .rbc-event-label {
+  @apply block;
+}
+
+.rbc-time-view .rbc-event-content {
+  @apply flex-1;
+}
+
+/* Date cells */
+.rbc-date-cell {
+  @apply text-right p-1 text-sm;
+}
+
+.rbc-date-cell > a {
+  @apply text-zinc-900 dark:text-zinc-300;
+}
+
+.rbc-off-range {
+  @apply text-zinc-400 dark:text-zinc-600;
+}
+
+/* Time slots */
+.rbc-time-view {
+  @apply border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden bg-white dark:bg-zinc-900 flex flex-col flex-1;
+}
+
+.rbc-time-header {
+  @apply border-zinc-200 dark:border-zinc-800 flex-none;
+}
+
+.rbc-time-header-content {
+  @apply border-l border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-time-content {
+  @apply border-zinc-200 dark:border-zinc-800 overflow-y-auto overflow-x-hidden;
+  height: auto !important;
+  flex: 1 1 0;
+  min-height: 0px;
+}
+
+.rbc-time-gutter {
+  @apply text-sm text-zinc-500 dark:text-zinc-400;
+}
+
+.rbc-timeslot-group {
+  @apply border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-time-slot {
+  @apply border-t border-zinc-100 dark:border-zinc-800;
+}
+
+.rbc-time-column {
+  @apply border-l border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-time-header-gutter {
+  @apply border-r border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-current-time-indicator {
+  @apply bg-emerald-500 dark:bg-emerald-400 h-0.5;
+}
+
+/* Navigation buttons */
+.rbc-toolbar button.rbc-nav-btn {
+  @apply p-1.5 rounded-full;
+}
+
+.rbc-toolbar button.rbc-nav-btn.rbc-active {
+  @apply bg-transparent;
+}
+
+/* View switcher buttons */
+.rbc-toolbar .rbc-btn-group:last-child {
+  @apply order-1 md:order-none;
+}
+
+/* Past events */
+.rbc-event.past-event {
+  @apply bg-zinc-400 dark:bg-zinc-600;
+}
+
+/* Upcoming events */
+.rbc-event.upcoming-event {
+  @apply bg-emerald-500 dark:bg-emerald-600;
+}
+
+/* Time column */
+.rbc-time-column .rbc-timeslot-group {
+  @apply min-h-[40px];
+}
+
+.rbc-time-view .rbc-header {
+  @apply border-b-0;
+}
+
+.rbc-time-header.rbc-overflowing {
+  @apply border-r border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-time-view .rbc-allday-cell {
+  @apply h-8 border-b border-zinc-200 dark:border-zinc-800;
+}
+
+.rbc-allday-cell .rbc-row-content {
+  @apply hidden;
+}
+
+.rbc-allday-cell .rbc-allday-cell {
+  @apply h-8;
+}
+
+.rbc-row.rbc-time-header-cell {
+  @apply min-h-[24px];
+}
 
 @layer base {
-  :root { --background: 0 0% 100%; --foreground: 0 0% 3.9%; --card: 0 0% 100%; --card-foreground: 0 0% 3.9%; --popover: 0 0% 100%; --popover-foreground: 0 0% 3.9%; --primary: 0 0% 9%; --primary-foreground: 0 0% 98%; --secondary: 0 0% 96.1%; --secondary-foreground: 0 0% 9%; --muted: 0 0% 96.1%; --muted-foreground: 0 0% 45.1%; --accent: 0 0% 96.1%; --accent-foreground: 0 0% 9%; --destructive: 0 84.2% 60.2%; --destructive-foreground: 0 0% 98%; --border: 0 0% 89.8%; --input: 0 0% 89.8%; --ring: 0 0% 3.9%; --chart-1: 12 76% 61%; --chart-2: 173 58% 39%; --chart-3: 197 37% 24%; --chart-4: 43 74% 66%; --chart-5: 27 87% 67%; --radius: 0.5rem; }
-  .dark { --background: 0 0% 3.9%; --foreground: 0 0% 98%; --card: 0 0% 3.9%; --card-foreground: 0 0% 98%; --popover: 0 0% 3.9%; --popover-foreground: 0 0% 98%; --primary: 0 0% 98%; --primary-foreground: 0 0% 9%; --secondary: 0 0% 14.9%; --secondary-foreground: 0 0% 98%; --muted: 0 0% 14.9%; --muted-foreground: 0 0% 63.9%; --accent: 0 0% 14.9%; --accent-foreground: 0 0% 98%; --destructive: 0 62.8% 30.6%; --destructive-foreground: 0 0% 98%; --border: 0 0% 14.9%; --input: 0 0% 14.9%; --ring: 0 0% 83.1%; --chart-1: 220 70% 50%; --chart-2: 160 60% 45%; --chart-3: 30 80% 55%; --chart-4: 280 65% 60%; --chart-5: 340 75% 55%; } }
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
 
 @layer base {
   * {
-    @apply border-border; }
+    @apply border-border;
+  }
   body {
-    @apply bg-background text-foreground; } }
+    @apply bg-background text-foreground;
+  }
+}
 

@@ -1,7 +1,8 @@
 import axios from 'axios';
+
 import { Appointment } from './types';
 
-const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000' });
+const api = axios.create({ baseURL: (import.meta as any).env.VITE_API_URL || 'http://localhost:8000' });
 
 export async function listAppointments(): Promise<Appointment[]> {
   const { data } = await api.get('/appointments/');

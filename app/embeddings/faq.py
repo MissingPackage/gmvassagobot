@@ -4,7 +4,7 @@ import numpy as np
 from pathlib import Path
 from app.embeddings.utils import get_embedding, cosine_similarity
 
-from regenerate_embeddings import regenerate_if_needed
+from app.ai.regenerate_embeddings import regenerate_if_needed
 
 regenerate_if_needed()
 

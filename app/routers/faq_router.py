@@ -6,11 +6,11 @@ from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from app.ai.regenerate_embeddings import regenerate_if_needed
 
 router = APIRouter( tags=["faq"])
 
 FAQ_FILE = Path(__file__).resolve().parent.parent.parent / "app" / "data" / "faq.json"
-print(f"FAQ_FILE: {FAQ_FILE}")
 
 class FAQ(BaseModel):
     id: str
@@ -66,3 +66,16 @@ def delete_faq(faq_id: str):
     DB = [f for f in DB if f.id != faq_id]
     save_faq(DB)
     return {"ok": True}
+
+@router.post("/faq/embeddings/regenerate")
+def regenerate_faq_embeddings():
+    try:
+        changed = regenerate_if_needed()
+        save_faq(DB)
+        if not changed:
+            return {"ok": True, "message": "Nessuna rigenerazione necessaria."}
+
+        return {"ok": True, "message": "Embeddings rigenerati"}
+
+    except Exception as e:
+        raise HTTPException(500, f"Errore nella rigenerazione degli embeddings: {str(e)}")

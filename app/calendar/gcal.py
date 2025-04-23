@@ -1,6 +1,7 @@
 # app/services/calendar_service.py
 from __future__ import print_function
-from datetime import timezone, datetime, timedelta
+
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from google.oauth2.credentials import Credentials
@@ -106,3 +107,52 @@ def get_upcoming_events(days: int = 7, calendar_id="primary"):
     )
     print(events_result.get("items", []))
     return events_result.get("items", [])
+
+def delete_event(event_id: str, calendar_id: str = "primary") -> bool:
+    try:
+        print(f"🔍 Attempting to delete event {event_id} from Google Calendar")
+        service = get_calendar_service()
+        
+        # First verify the event exists
+        try:
+            event = service.events().get(calendarId=calendar_id, eventId=event_id).execute()
+            print(f"✅ Found event to delete: {event.get('summary', 'Untitled')}")
+        except Exception as e:
+            print(f"❌ Event not found in Google Calendar: {str(e)}")
+            return False
+            
+        # Delete the event
+        service.events().delete(calendarId=calendar_id, eventId=event_id).execute()
+        print(f"✅ Successfully deleted event {event_id}")
+        return True
+    except Exception as e:
+        print(f"❌ Error during event deletion: {str(e)}")
+        return False
+
+def update_event(event_id: str, start_time, end_time, summary: str, description: str = "") -> bool:
+    """Aggiorna un evento esistente nel calendario."""
+    try:
+        service = get_calendar_service()
+        
+        # Recupera l'evento esistente
+        event = service.events().get(calendarId='primary', eventId=event_id).execute()
+        
+        # Aggiorna i campi
+        event['summary'] = summary
+        event['description'] = description
+        event['start'] = {'dateTime': start_time.isoformat(), 'timeZone': 'Europe/Rome'}
+        event['end'] = {'dateTime': end_time.isoformat(), 'timeZone': 'Europe/Rome'}
+        
+        # Invia l'aggiornamento
+        updated_event = service.events().update(
+            calendarId='primary',
+            eventId=event_id,
+            body=event
+        ).execute()
+        
+        print(f"✅ Evento aggiornato con successo: {updated_event.get('id')}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Errore nell'aggiornamento dell'evento: {str(e)}")
+        return False
