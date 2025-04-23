@@ -3,9 +3,9 @@ from fastapi import APIRouter, HTTPException
 from .faq import DB, save_faq
 from app.ai.regenerate_embeddings import generate_faq_embeddings
 
-router = APIRouter(tags=["faq_embeddings"])
+router = APIRouter(prefix="/api/faq", tags=["faq_embeddings"])
 
-@router.post("/faq/embeddings/regenerate")
+@router.post("/embeddings/regenerate")
 def regenerate_faq_embeddings():
     try:
         generate_faq_embeddings(DB)

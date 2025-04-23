@@ -8,6 +8,12 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
-    "framer-motion": "^12.7.4"
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.14.1",
+    "@types/testing-library__react": "^10.0.1",
+    "framer-motion": "^12.7.4",
+    "recharts": "^2.15.3"
   }
 }

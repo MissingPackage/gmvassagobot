@@ -1,29 +1,18 @@
 from datetime import datetime, timezone
-from typing import List
 
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter
+
+from app.templates.schemas import Appointment, AppointmentIn
+from app.routers import faq_router, conversation_router
+
+router = APIRouter(prefix="/api/appointments", tags=["Appointments"])
+
+router.include_router(faq_router.router)
+router.include_router(conversation_router.router)
 
 from app.calendar.gcal import (delete_event, get_calendar_service,
                                get_upcoming_events, update_event)
 
-api_router = APIRouter(tags=["api"])
-
-# --- MODELLI ---
-
-class Appointment(BaseModel):
-    id: str
-    title: str
-    start: datetime
-    end: datetime
-    customer: str | None = None
-    status: str = "confirmed"
-
-class AppointmentIn(BaseModel):
-    title: str
-    start: datetime
-    end: datetime
-    customer: str | None = None
 
 def gcal_to_appt(event) -> Appointment:
     start_raw = event.get("start", {})
@@ -49,7 +38,7 @@ def gcal_to_appt(event) -> Appointment:
     )
 
 # --- CRUD ---
-@api_router.get("/appointments", response_model=list[Appointment])
+@router.get("/", response_model=list[Appointment])
 def list_appointments(days: int = 7):
     try:
         gcal_events = get_upcoming_events(days=days)
@@ -68,7 +57,7 @@ def list_appointments(days: int = 7):
         print("⚠️ Errore nel recupero eventi da Google Calendar:", e)
         raise HTTPException(500, "Errore nel recupero degli eventi")
 
-@api_router.post("/appointments", response_model=Appointment)
+@router.post("/", response_model=Appointment)
 def create_appointment(appt: AppointmentIn):
     try:
         from app.calendar.gcal import create_event
@@ -84,12 +73,14 @@ def create_appointment(appt: AppointmentIn):
         # Recupera l'evento appena creato per avere tutti i dettagli
         service = get_calendar_service()
         event = service.events().get(calendarId='primary', eventId=event_id).execute()
+        from app.utils.logging import log_event
+        log_event("Appuntamento creato", f"Titolo: {appt.title}, Inizio: {appt.start}, Fine: {appt.end}")
         return gcal_to_appt(event)
     except Exception as e:
         print("⚠️ Errore nella creazione dell'evento:", e)
         raise HTTPException(500, f"Errore nella creazione dell'evento: {str(e)}")
 
-@api_router.put("/appointments/{appt_id}", response_model=Appointment)
+@router.put("/{appt_id}", response_model=Appointment)
 def update_appointment(appt_id: str, payload: AppointmentIn):
     try:
         success = update_event(
@@ -105,17 +96,21 @@ def update_appointment(appt_id: str, payload: AppointmentIn):
         # Recupera l'evento aggiornato per avere tutti i dettagli
         service = get_calendar_service()
         event = service.events().get(calendarId='primary', eventId=appt_id).execute()
+        from app.utils.logging import log_event
+        log_event("Appuntamento aggiornato", f"ID: {appt_id}, Nuovo inizio: {payload.start}, Nuova fine: {payload.end}")
         return gcal_to_appt(event)
     except Exception as e:
         print("⚠️ Errore nell'aggiornamento dell'evento:", e)
         raise HTTPException(500, f"Errore nell'aggiornamento dell'evento: {str(e)}")
 
-@api_router.delete("/appointments/{appt_id}")
+@router.delete("/{appt_id}")
 def delete_appointment(appt_id: str):
     try:
         success = delete_event(appt_id)
         if not success:
             raise HTTPException(500, "Errore nell'eliminazione dell'evento")
+        from app.utils.logging import log_event
+        log_event("Appuntamento eliminato", f"ID: {appt_id}")
         return {"ok": True}
     except Exception as e:
         print("⚠️ Errore nell'eliminazione dell'evento:", e)

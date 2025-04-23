@@ -7,7 +7,12 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),          // 👈 aggiungi questo
+      '@': resolve(__dirname, 'src'),
+    },
+  },
+  server: {
+    proxy: {
+      '/api': 'http://localhost:8000',
     },
   },
 });

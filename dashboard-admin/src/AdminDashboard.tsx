@@ -12,20 +12,10 @@ import { useEffect, useState } from 'react';
 import AppointmentsSection from './components/AppointmentsSection';
 import FAQSection from './components/FaqSection';
 import SidebarToggle from './components/ui/SidebarToggle';
+import ConversationsSection from './components/ConversationsSection';
+import { DashboardStats } from './components/DashboardStats';
 
-// Componente temporaneo per i logs
-function LogsSection() {
-  return (
-    <section className="space-y-6">
-      <header className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Logs</h2>
-      </header>
-      <div className="text-zinc-400">
-        Visualizzazione logs in arrivo...
-      </div>
-    </section>
-  );
-}
+import { LogsSection } from './components/LogsSection';
 
 /**
  * Utility to concatenate class names conditionally
@@ -38,6 +28,7 @@ const primaryNav = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'appointments', label: 'Appuntamenti', icon: CalendarDays },
   { id: 'faq', label: 'FAQ', icon: MessageSquare },
+  { id: 'conversations', label: 'Conversazioni', icon: MessageSquare },
   { id: 'logs', label: 'Logs', icon: FileText },
 ];
 
@@ -147,9 +138,11 @@ export default function AdminDashboard() {
       <main className="flex-1 min-w-0 p-10 overflow-hidden">
         {current === 'appointments' && <AppointmentsSection />}
         {current === 'faq' && <FAQSection />}
+        {current === 'conversations' && <ConversationsSection />}
         {current === 'logs' && <LogsSection />}
         {current === 'dashboard' && (
           <section className="prose dark:prose-invert">
+            <DashboardStats />
             <h1>👋 Benvenuto nel pannello di controllo</h1>
             <p>Da qui puoi gestire tutto il sistema chatbot.</p>
             <ul>
@@ -187,5 +180,5 @@ function FAQ() {
   return <FAQSection />;
 }
 function Logs() {
-  return <div className="text-lg">TODO: implement logs viewer</div>;
+  return <LogsSection />;
 }

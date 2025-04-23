@@ -15,8 +15,8 @@ import { Pencil, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { createFaq, deleteFaq, Faq, listFaq, updateFaq } from './faq/api';
-import { regenerateFaqEmbeddings } from './faq/embeddings';
+import { createFaq, deleteFaq, FAQ, listFaq,updateFaq } from './api/faq/api';
+import { regenerateFaqEmbeddings } from './api/faq/embeddings';
 import { Toast } from '@/components/ui/toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -44,7 +44,7 @@ export default function FAQSection() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['faq'] }),
   });
 
-  const [editing, setEditing] = useState<Faq | null>(null);
+  const [editing, setEditing] = useState<FAQ | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [toast, setToast] = useState<{ msg: string; state: 'success' | 'error' | 'info' } | null>(null);
   const [search, setSearch] = useState('');

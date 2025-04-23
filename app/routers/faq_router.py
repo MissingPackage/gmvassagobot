@@ -5,21 +5,14 @@ from typing import List
 from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from app.ai.regenerate_embeddings import regenerate_if_needed
 
-router = APIRouter( tags=["faq"])
+from app.ai.regenerate_embeddings import regenerate_if_needed
+from app.templates.schemas import FAQ, FAQIn
+
+router = APIRouter(prefix="/api/faq", tags=["faq"])
 
 FAQ_FILE = Path(__file__).resolve().parent.parent.parent / "app" / "data" / "faq.json"
 
-class FAQ(BaseModel):
-    id: str
-    question: str
-    answer: str
-
-class FAQIn(BaseModel):
-    question: str
-    answer: str
 
 # ── utilità load/save ──────────────────────────────────────────────────
 def load_faq() -> list[FAQ]:
@@ -39,18 +32,18 @@ def save_faq(db: list[FAQ]):
 DB: list[FAQ] = load_faq()
 
 # ── endpoints CRUD ────────────────────────────────────────────────────
-@router.get("/faq", response_model=List[FAQ])
+@router.get("/", response_model=List[FAQ])
 def list_faq():
     return DB
 
-@router.post("/faq", response_model=FAQ)
+@router.post("/", response_model=FAQ)
 def create_faq(payload: FAQIn):
     new = FAQ(id=str(uuid4()), **payload.dict())
     DB.append(new)
     save_faq(DB)
     return new
 
-@router.put("/faq/{faq_id}", response_model=FAQ)
+@router.put("/{faq_id}", response_model=FAQ)
 def update_faq(faq_id: str, payload: FAQIn):
     for idx, faq in enumerate(DB):
         if faq.id == faq_id:
@@ -60,14 +53,14 @@ def update_faq(faq_id: str, payload: FAQIn):
             return updated
     raise HTTPException(404, "FAQ not found")
 
-@router.delete("/faq/{faq_id}")
+@router.delete("/{faq_id}")
 def delete_faq(faq_id: str):
     global DB
     DB = [f for f in DB if f.id != faq_id]
     save_faq(DB)
     return {"ok": True}
 
-@router.post("/faq/embeddings/regenerate")
+@router.post("/embeddings/regenerate")
 def regenerate_faq_embeddings():
     try:
         changed = regenerate_if_needed()
