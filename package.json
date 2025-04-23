@@ -6,5 +6,8 @@
     "clsx": "^2.1.1",
     "react-hook-form": "^7.56.0",
     "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "framer-motion": "^12.7.4"
   }
 }

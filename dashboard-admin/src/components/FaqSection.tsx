@@ -18,6 +18,7 @@ import { z } from 'zod';
 import { createFaq, deleteFaq, Faq, listFaq, updateFaq } from './faq/api';
 import { regenerateFaqEmbeddings } from './faq/embeddings';
 import { Toast } from '@/components/ui/toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const schema = z.object({
   question: z.string().min(3, 'Min 3 caratteri'),
@@ -46,6 +47,14 @@ export default function FAQSection() {
   const [editing, setEditing] = useState<Faq | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [toast, setToast] = useState<{ msg: string; state: 'success' | 'error' | 'info' } | null>(null);
+  const [search, setSearch] = useState('');
+
+  // Filtro FAQ in base alla ricerca
+  const filteredFaqs = faqs.filter(
+    (faq) =>
+      faq.question?.toLowerCase().includes(search.toLowerCase()) ||
+      faq.answer?.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <>
@@ -87,49 +96,90 @@ export default function FAQSection() {
           </Dialog>
         </header>
 
+        {/* Barra di ricerca FAQ - UNICA */}
+        <div className="w-full max-w-md mb-2">
+          <Input
+            type="text"
+            placeholder="Cerca tra le FAQ..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="w-full"
+          />
+        </div>
+
         {isLoading ? (
           <p>Caricamento…</p>
         ) : (
           <ul className="space-y-2">
-            {faqs.map((faq) => (
-              <li key={faq.id} className="rounded-lg border border-zinc-800 p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-zinc-200">{faq.question ?? ''}</p>
-                    <p className="mt-1 whitespace-pre-line text-gray-700 dark:text-zinc-300">{faq.answer ?? ''}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Dialog open={editing?.id === faq.id} onOpenChange={(open) => { if (!open) setEditing(null); }}>
-                      <DialogTrigger asChild>
-                        <Button variant="ghost" size="icon" onClick={() => setEditing(faq)}>
-                          <Pencil className="h-4 w-4" />
+            <AnimatePresence initial={false}>
+              {filteredFaqs.length === 0 ? (
+                <motion.li
+                  key="no-results"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="text-zinc-400"
+                >
+                  Nessuna FAQ trovata.
+                </motion.li>
+              ) : (
+                filteredFaqs.map((faq) => (
+                  <motion.li
+                    key={faq.id}
+                    layout // permette animazioni fluide al riordinamento
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="rounded-lg border border-zinc-800 p-4"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-zinc-200">
+                          {faq.question ?? ''}
+                        </p>
+                        <p className="mt-1 whitespace-pre-line text-gray-700 dark:text-zinc-300">
+                          {faq.answer ?? ''}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Dialog open={editing?.id === faq.id} onOpenChange={(open) => { if (!open) setEditing(null); }}>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="icon" onClick={() => setEditing(faq)}>
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          {editing?.id === faq.id && (
+                            <FAQForm
+                              title="Modifica FAQ"
+                              defaultValues={{
+                                question: faq.question || '',
+                                answer: faq.answer || '',
+                              }}
+                              onSubmit={async (v) => {
+                                await update.mutateAsync({ id: faq.id, values: v });
+                                setEditing(null);
+                              }}
+                            />
+                          )}
+                        </Dialog>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => remove.mutate(faq.id!)}
+                          className="hover:text-red-500"
+                        >
+                          <Trash className="h-4 w-4" />
                         </Button>
-                      </DialogTrigger>
-                      {editing?.id === faq.id && (
-                        <FAQForm
-                          title="Modifica FAQ"
-                          defaultValues={{ question: faq.question || '', answer: faq.answer || '' }}
-                          onSubmit={async (v) => {
-                            await update.mutateAsync({ id: faq.id, values: v });
-                            setEditing(null);
-                          }}
-                        />
-                      )}
-                    </Dialog>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => remove.mutate(faq.id!)}
-                      className="hover:text-red-500"
-                    >
-                      <Trash className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </li>
-            ))}
+                      </div>
+                    </div>
+                  </motion.li>
+                ))
+              )}
+            </AnimatePresence>
           </ul>
         )}
+
       </section>
       <Toast message={toast?.msg ?? ''} show={!!toast} state={toast?.state} onClose={() => setToast(null)} />
     </>
