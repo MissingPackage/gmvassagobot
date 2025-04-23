@@ -5,11 +5,13 @@ import {
   LogOut,
   MessageSquare,
   Palette,
+  Menu,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import AppointmentsSection from './components/AppointmentsSection';
 import FAQSection from './components/FaqSection';
+import SidebarToggle from './components/ui/SidebarToggle';
 
 // Componente temporaneo per i logs
 function LogsSection() {
@@ -55,6 +57,8 @@ export default function AdminDashboard() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+
   // Applica il tema all'avvio e quando cambia
   useEffect(() => {
     if (isDark) {
@@ -67,12 +71,28 @@ export default function AdminDashboard() {
   }, [isDark]);
 
   return (
-    <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">
+    <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 relative">
+      <SidebarToggle isOpen={isSidebarOpen} onToggle={() => setSidebarOpen((v) => !v)} />
       {/* Sidebar */}
-      <aside className="w-60 bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 p-4 flex flex-col">
-        <header className="flex items-center gap-2 mb-6 text-lg font-semibold">
-          <LayoutDashboard className="h-5 w-5 text-emerald-400" />
-          <span>Admin</span>
+      <aside
+        className={
+          `w-60 bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 p-4 flex flex-col transition-transform duration-300`
+          + (isSidebarOpen ? ' translate-x-0' : ' -translate-x-full')
+        }
+        style={{ position: 'relative', zIndex: 40, minHeight: '100vh' }}
+      >
+        <header className="flex items-center justify-between gap-2 mb-6 text-lg font-semibold">
+          <div className="flex items-center gap-2">
+            <LayoutDashboard className="h-5 w-5 text-emerald-400" />
+            <span>Admin</span>
+          </div>
+          <button
+            className="p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none"
+            aria-label="Nascondi sidebar"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
         </header>
 
         {/* Primary navigation */}
