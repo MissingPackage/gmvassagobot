@@ -1,18 +1,27 @@
 [
-    {
-      "question": "Quanto costa una sessione?",
-      "answer": "La prima sessione è gratuita. Le successive partono da 18€."
-    },
-    {
-      "question": "Dove posso leggere i manuali?",
-      "answer": "Ti diamo accesso completo a D&D Beyond con tutti i manuali 5e."
-    },
-    {
-      "question": "Non ho mai giocato",
-      "answer": "Nessun problema! Facciamo un incontro preparatorio gratuito prima della prima sessione."
-    },
-    {
-      "question": "Chi è Paolo Mantovani?",
-      "answer": "E' il fondatore e CEO della GM Vassago. Lo puoi sempre raggiungere su WhatsApp per qualsiasi domanda."
-    }
-  ]
+  {
+    "id": "e8d62741-8ca9-4bcd-8e21-9862cd723251",
+    "question": "Quanto costa una sessione?",
+    "answer": "La prima sessione è gratuita. Le successive partono da 18€. C'é anche la possibilitá di fare abbonamenti ad un buonissimo prezzo."
+  },
+  {
+    "id": "c24554ec-4721-4f58-ac2f-c0bb0c45adc8",
+    "question": "Dove posso leggere i manuali?",
+    "answer": "Ti diamo accesso completo a D&D Beyond con tutti i manuali 5e."
+  },
+  {
+    "id": "5dde704e-c70a-47f0-8fc6-fd934f07ce20",
+    "question": "Non ho mai giocato",
+    "answer": "Nessun problema! Facciamo un incontro preparatorio gratuito prima della prima sessione."
+  },
+  {
+    "id": "e7168e14-6301-4bd4-afd2-b6d56e727286",
+    "question": "Chi è Paolo Mantovani?",
+    "answer": "E' il fondatore e CEO della GM Vassago. Lo puoi sempre raggiungere su WhatsApp per qualsiasi domanda."
+  },
+  {
+    "id": "a6c948e3-4153-43b4-8064-3c186daf23e6",
+    "question": "Quali sistemi di gioco supportate?",
+    "answer": "Tutti! Non importa il sistema di gioco: i nostri studenti GM saranno in grado di adattarsi senza problemi"
+  }
+]

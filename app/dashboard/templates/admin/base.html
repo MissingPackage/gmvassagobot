@@ -1,0 +1,79 @@
+<!-- templates/admin/base.html -->
+<!DOCTYPE html>
+<html lang="it" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Admin{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+    <link rel="stylesheet" href="/static/css/dashboard.css" />
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+  </head>
+  <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside class="w-64 bg-gray-100 dark:bg-gray-800 p-4 space-y-4">
+        <h1 class="text-xl font-bold flex items-center space-x-2">
+          <span>🛠️</span><span>Admin</span>
+        </h1>
+
+        <nav class="space-y-1 text-sm">
+          <a
+            href="#"
+            hx-get="/admin/calendar"
+            hx-target="#main"
+            hx-swap="innerHTML"
+            hx-on="htmx:afterSwap: window.initCalendar && window.initCalendar()"
+            class="flex items-center space-x-2 px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+          >
+            <span>📅</span><span>Appuntamenti</span>
+          </a>
+          <a
+            href="#"
+            hx-get="/admin/faq"
+            hx-target="#main"
+            hx-swap="innerHTML"
+            class="flex items-center space-x-2 px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+          >
+            <span>❓</span><span>FAQ</span>
+          </a>
+          <a
+            href="#"
+            hx-get="/admin/logs"
+            hx-target="#main"
+            hx-swap="innerHTML"
+            class="flex items-center space-x-2 px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+          >
+            <span>📄</span><span>Logs</span>
+          </a>
+        </nav>
+
+        <hr class="border-gray-300 dark:border-gray-600 my-4" />
+
+        <div class="space-y-1 text-sm">
+          <button
+            onclick="document.documentElement.classList.toggle('dark')"
+            class="flex items-center space-x-2 px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 w-full text-left"
+          >
+            <span>🌓</span><span>Tema</span>
+          </button>
+          <a
+            href="/admin/logout"
+            class="flex items-center space-x-2 px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+          >
+            <span>🚪</span><span>Logout</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- Contenuto principale -->
+      <main id="main" class="flex-1 p-6">
+        {% block content %} {% endblock %}
+      </main>
+    </div>
+    <script src="/static/js/dashboard.js"></script>
+  </body>
+</html>
