@@ -19,6 +19,8 @@ venv/
 app/data/*.json
 !app/data/faq.json  # Mantieni faq.json nel repository
 app/data/.faq.hash
+*.sqlite3
+*.zip
 
 # Credentials
 app/data/credentials.json
