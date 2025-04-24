@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calendario Appuntamenti</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+  </head>
+  <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-6">
+    <h1 class="text-2xl font-bold mb-4">📅 Calendario Appuntamenti</h1>
+
+    <div
+      id="calendar"
+      class="bg-white dark:bg-gray-800 p-4 rounded shadow"
+    ></div>
+
+    <!-- ✅ FullCalendar CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- ✅ FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.js"></script>
+
+    <!-- ✅ Variabili globali (eventi) -->
+    <script>
+      window.appuntamenti = {{ calendar_json | tojson | safe }};
+    </script>
+
+    <!-- ✅ Calendario custom -->
+    <script src="/static/js/calendar.js"></script>
+  </body>
+</html>

@@ -19,6 +19,8 @@ venv/
 app/data/*.json
 !app/data/faq.json  # Mantieni faq.json nel repository
 app/data/.faq.hash
+*.sqlite3
+*.zip
 
 # Credentials
 app/data/credentials.json
@@ -34,4 +36,29 @@ Thumbs.db
 
 # CSV files (if not needed in the repo)
 *.csv
-node_modules
+
+# Node.js specific
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Vite specific
+.vite/
+*.cache
+
+# React specific
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

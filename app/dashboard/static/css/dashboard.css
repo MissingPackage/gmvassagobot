@@ -1,0 +1,9 @@
+/* dashboard.css */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .dark-mode {
+    background-color: #111827;
+    color: #f9fafb;
+  }

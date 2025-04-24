@@ -32,16 +32,19 @@ def regenerate():
     print(f"\n💾 Embedding salvati su: {CACHE_PATH.resolve()}\n")
 
 def regenerate_if_needed():
-    """Controlla se faq.json è cambiato e rigenera solo se serve."""
-    current_hash = get_file_hash(FAQ_PATH)
-    previous_hash = HASH_PATH.read_text().strip() if HASH_PATH.exists() else ""
-
-    if current_hash == previous_hash:
-        print("✅ Le FAQ non sono cambiate. Nessuna rigenerazione necessaria.")
-        return
-
-    regenerate()
-    HASH_PATH.write_text(current_hash)
+    try:
+        current_hash = get_file_hash(FAQ_PATH)
+        previous_hash = HASH_PATH.read_text().strip() if HASH_PATH.exists() else ""
+        if current_hash == previous_hash:
+            print("✅ Le FAQ non sono cambiate. Nessuna rigenerazione necessaria.")
+            return False
+        regenerate()
+        HASH_PATH.write_text(current_hash)
+        return True
+    except Exception as e:
+        print("❌ Errore in regenerate_if_needed:", e)
+        # Non rilanciare qui, lascia gestire alla rotta
+        raise
 
 if __name__ == "__main__":
     regenerate_if_needed()
