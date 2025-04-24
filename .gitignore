@@ -34,3 +34,4 @@ Thumbs.db
 
 # CSV files (if not needed in the repo)
 *.csv
+node_modules
