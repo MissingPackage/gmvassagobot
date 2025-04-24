@@ -24,12 +24,14 @@ function cn(...classes: (string | undefined | null | boolean)[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+import WhatsappSection from './components/WhatsappSection';
 const primaryNav = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'appointments', label: 'Appuntamenti', icon: CalendarDays },
   { id: 'faq', label: 'FAQ', icon: MessageSquare },
   { id: 'conversations', label: 'Conversazioni', icon: MessageSquare },
   { id: 'logs', label: 'Logs', icon: FileText },
+  { id: 'whatsapp', label: 'Whatsapp', icon: MessageSquare },
 ];
 
 const secondaryNav = [
@@ -107,51 +109,15 @@ export default function AdminDashboard() {
             ))}
           </ul>
         </nav>
-
-        {/* Secondary navigation */}
-        <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4">
-          <ul className="space-y-1">
-            {secondaryNav.map(({ id, label, icon: Icon }) => (
-              <li key={id}>
-                <button
-                  onClick={() => {
-                    if (id === 'theme') {
-                      setIsDark(!isDark);
-                    }
-                    if (id === 'logout') {
-                      // TODO: add real logout flow
-                      alert('Logout!');
-                    }
-                  }}
-                  className="group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
-                >
-                  <Icon className="h-4 w-4" />
-                  {label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
       </aside>
-
       {/* Main content */}
-      <main className="flex-1 min-w-0 p-10 overflow-hidden">
+      <main className="flex-1 p-6 overflow-y-auto">
+        {current === 'dashboard' && <DashboardStats />}
         {current === 'appointments' && <AppointmentsSection />}
         {current === 'faq' && <FAQSection />}
         {current === 'conversations' && <ConversationsSection />}
         {current === 'logs' && <LogsSection />}
-        {current === 'dashboard' && (
-          <section className="prose dark:prose-invert">
-            <DashboardStats />
-            <h1>👋 Benvenuto nel pannello di controllo</h1>
-            <p>Da qui puoi gestire tutto il sistema chatbot.</p>
-            <ul>
-              <li>📅 Controllare e modificare appuntamenti</li>
-              <li>💬 Rispondere alle FAQ</li>
-              <li>📄 Visualizzare i log</li>
-            </ul>
-          </section>
-        )}
+        {current === 'whatsapp' && <WhatsappSection />}
       </main>
     </div>
   );
@@ -171,14 +137,3 @@ function Appointments() {
     );
 }
 */
-
-function Appointments() {
-    return <AppointmentsSection />
-}
-
-function FAQ() {
-  return <FAQSection />;
-}
-function Logs() {
-  return <LogsSection />;
-}

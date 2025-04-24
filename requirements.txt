@@ -16,3 +16,4 @@ pytest-asyncio
 itsdangerous
 sqlalchemy
 alembic
+slowapi

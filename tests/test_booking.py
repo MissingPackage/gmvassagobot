@@ -24,7 +24,7 @@ def test_estrai_durata():
     assert estrai_durata("testo senza durata") is None
 
 def test_estrai_data_ora():
-    assert estrai_data_ora("21 aprile 2025 alle 16:00") == datetime(2025, 4, 21, 16, 0)
+    assert estrai_data_ora("31 dicembre 2025 alle 16:00") == datetime(2025, 4, 21, 16, 0)
     assert estrai_data_ora("domani alle 14:00") is not None
     assert estrai_data_ora("testo senza data") is None
 
