@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from app.templates.schemas import Appointment, AppointmentIn
 from app.routers import faq_router, conversation_router
@@ -60,10 +60,10 @@ def list_appointments(days: int = 7):
 @router.post("/", response_model=Appointment)
 def create_appointment(appt: AppointmentIn):
     try:
-        from app.calendar.gcal import create_event
-        event_id = create_event(
-            start=appt.start,
-            end=appt.end,
+        from app.calendar.gcal import create_appointment
+        event_id = create_appointment(
+            start_time=appt.start,
+            end_time=appt.end,
             summary=appt.title,
             description=appt.customer or ""
         )
@@ -72,7 +72,12 @@ def create_appointment(appt: AppointmentIn):
         
         # Recupera l'evento appena creato per avere tutti i dettagli
         service = get_calendar_service()
-        event = service.events().get(calendarId='primary', eventId=event_id).execute()
+        # Ricava l'id Google Calendar dall'url restituito (htmlLink)
+        # Se invece create_appointment restituisce già l'id, usa direttamente event_id
+        import re
+        match = re.search(r'/eventedit/(.*)$', event_id)
+        gcal_id = match.group(1) if match else event_id
+        event = service.events().get(calendarId='primary', eventId=gcal_id).execute()
         from app.utils.logging import log_event
         log_event("Appuntamento creato", f"Titolo: {appt.title}, Inizio: {appt.start}, Fine: {appt.end}")
         return gcal_to_appt(event)

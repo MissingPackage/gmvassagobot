@@ -25,6 +25,7 @@ function cn(...classes: (string | undefined | null | boolean)[]) {
 }
 
 import WhatsappSection from './components/WhatsappSection';
+import UsersSection from './components/UsersSection';
 const primaryNav = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'appointments', label: 'Appuntamenti', icon: CalendarDays },
@@ -32,6 +33,7 @@ const primaryNav = [
   { id: 'conversations', label: 'Conversazioni', icon: MessageSquare },
   { id: 'logs', label: 'Logs', icon: FileText },
   { id: 'whatsapp', label: 'Whatsapp', icon: MessageSquare },
+  { id: 'users', label: 'Users', icon: MessageSquare },
 ];
 
 const secondaryNav = [
@@ -109,6 +111,28 @@ export default function AdminDashboard() {
             ))}
           </ul>
         </nav>
+        {/* Secondary navigation: tema e logout */}
+        <div className="mt-8 border-t border-zinc-200 dark:border-zinc-800 pt-4">
+          <ul className="space-y-1">
+            {secondaryNav.map(({ id, label, icon: Icon }) => (
+              <li key={id}>
+                <button
+                  onClick={() => {
+                    if (id === 'theme') setIsDark(d => !d);
+                    if (id === 'logout') {/* logica logout qui */}
+                  }}
+                  className={cn(
+                    'group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800',
+                    id === 'theme' ? 'text-emerald-500' : 'text-zinc-500 dark:text-zinc-400'
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  {label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </aside>
       {/* Main content */}
       <main className="flex-1 p-6 overflow-y-auto">
@@ -118,6 +142,7 @@ export default function AdminDashboard() {
         {current === 'conversations' && <ConversationsSection />}
         {current === 'logs' && <LogsSection />}
         {current === 'whatsapp' && <WhatsappSection />}
+        {current === 'users' && <UsersSection />}
       </main>
     </div>
   );

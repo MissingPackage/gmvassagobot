@@ -26,3 +26,12 @@ class Message(Base):
     timestamp = Column(DateTime, default=datetime.utcnow)
 
     conversation = relationship("Conversation", back_populates="messages")
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=True)
+    email = Column(String, unique=True, index=True)
+    phone = Column(String, unique=True, index=True)
+
+    #appointments = relationship("Appointment", back_populates="user", cascade="all, delete")

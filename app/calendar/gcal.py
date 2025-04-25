@@ -12,16 +12,26 @@ CREDENTIALS_PATH = Path("app/data/credentials.json")
 TOKEN_PATH = Path("app/data/token.json")
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
+from google.auth.transport.requests import Request
+
 def get_calendar_service():
     creds = None
+    # Carica il token se esiste
     if TOKEN_PATH.exists():
         creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
-    else:
-        flow = InstalledAppFlow.from_client_secrets_file(str(CREDENTIALS_PATH), SCOPES)
-        creds = flow.run_local_server(port=0)
+    # Se non ci sono credenziali o sono invalide/scadute
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            # Forza il prompt del consenso per ottenere il refresh_token
+            flow = InstalledAppFlow.from_client_secrets_file(
+                str(CREDENTIALS_PATH), SCOPES
+            )
+            creds = flow.run_local_server(port=0, prompt='consent', access_type='offline')
+        # Salva sempre il nuovo token (sia dopo refresh che nuova autenticazione)
         with open(TOKEN_PATH, "w") as token:
             token.write(creds.to_json())
-
     return build("calendar", "v3", credentials=creds)
 
 def check_availability(start_time, end_time, calendar_id="primary") -> bool:
